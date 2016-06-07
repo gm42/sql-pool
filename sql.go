@@ -910,6 +910,13 @@ func (db *DB) putConn(dc *driverConn, err error) {
 	}
 }
 
+func (db *DB) PoolFree() int {
+	db.mu.Lock()
+	i := len(db.freeConn)
+	db.mu.Unlock()
+	return i
+}
+
 // Satisfy a connRequest or put the driverConn in the idle pool and return true
 // or return false.
 // putConnDBLocked will satisfy a connRequest if there is one, or it will
